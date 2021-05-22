@@ -1,0 +1,49 @@
+<ibm-header [routerLink]="['/']" (click)="entered=false; applicant=false;" name="Watson Recruitment">
+  <!-- Icons for user information-->
+  <ibm-header-global>
+    <ibm-header-action #firstAction title="action">
+    </ibm-header-action>
+  </ibm-header-global>
+</ibm-header>
+
+<main class="main" style="margin-top: 8rem;">
+  <div class="main-container" style="margin-top: 2.5rem;">
+
+    <div *ngIf="!entered" ibmGrid style="margin-top: 10rem; width:70%">
+      <div ibmRow>
+        <div ibmCol [columnNumbers]="{'lg':7, 'md': 7}" style="padding-top: 2rem;">
+          <h1 style="font-weight: 600; font-size: 26px;">Enter Watson Recruitment</h1>
+
+          <div *ngIf="!applicant">
+            <h4 style="font-weight: 200;">Select your role to enter</h4>
+            <div ibmRow style="margin:0; margin-top: 1rem;">
+              <button ibmButton="primary" (click)="applicant=true;">Applicant</button>
+            </div>
+            <div ibmRow style="margin:0; margin-top: 1rem;">
+              <button ibmButton="primary" (click)="entered=true" [routerLink]="['/applications']">Recruiter</button>
+            </div>
+          </div>
+
+          <div *ngIf="applicant" class="top-layout-01">
+            <ibm-label helperText="Application ID*">
+              <input ibmText (change)='id=$event.target.value' [value]="id"
+                placeholder="Enter Application ID given by recruiter">
+            </ibm-label>
+            <button ibmButton="primary" (click)="entered=true; applicant=false; id=null;" style="margin-top: 0.5rem;"
+              [routerLink]="['/applicant/' + id]">Enter</button>
+          </div>
+
+        </div>
+
+        <div ibmCol [columnNumbers]="{'lg':9, 'md': 9}">
+          <img src="https://www.nicepng.com/png/full/89-891356_ibm-watson-avatar-ibm-watson-icon.png"
+            style="max-width: 100%;" />
+        </div>
+      </div>
+    </div>
+
+    <router-outlet></router-outlet>
+  </div>
+
+
+</main>

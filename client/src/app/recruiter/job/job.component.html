@@ -1,0 +1,40 @@
+<div>
+  <!--INPUTS -->
+  <div ibmGrid style="width: 70%;">
+    <ibm-breadcrumb noTrailingSlash="true">
+      <ibm-breadcrumb-item [route]="['/applications']">
+        Hiring Dashboard
+      </ibm-breadcrumb-item>
+    </ibm-breadcrumb>
+    <div ibmRow style="margin-top:0.5rem;">
+      <div ibmCol [columnNumbers]="{'lg':10, 'md':10}">
+        <h2>Applicant Review</h2>
+        <h4 *ngIf="!loading" style="margin-bottom: 1rem;">{{ application.title  }} <ibm-tag type="purple"><strong>
+              {{ application._id | uppercase }}</strong></ibm-tag>
+        </h4>
+      </div>
+    </div>
+
+
+    <!--FIELD INPUTS -->
+    <div class="top-layout-01 tiles">
+      <div ibmRow>
+        <div ibmCol [columnNumbers]="{'lg':6, 'md':6}" *ngFor="let applicant of applicants">
+
+          <ibm-clickable-tile [route]="['applications/'+application._id+'/'+applicant._id]" style="padding:2rem;">
+            <h5>Applicant ID: <ibm-tag type="teal"><strong>
+                  {{ applicant._id | uppercase }}</strong></ibm-tag>
+            </h5>
+            <p style="font-weight: 400; font-size: 14px;margin-top:0.5rem">Peronsality Insights</p>
+            <div>
+              <ibm-tag type="green" *ngFor="let insights of applicant.personalityInsights.slice(0,3)" style="margin-left: 0;">
+                <strong>{{ insights.name.replace('-',' ')  }}</strong>
+              </ibm-tag>
+            </div>
+          </ibm-clickable-tile>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

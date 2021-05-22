@@ -1,0 +1,164 @@
+<div>
+  <!--INPUTS -->
+  <div ibmGrid style="width: 70%;">
+    <ibm-breadcrumb noTrailingSlash="true">
+      <ibm-breadcrumb-item [route]="['/applications']">
+        Hiring Dashboard
+      </ibm-breadcrumb-item>
+      <ibm-breadcrumb-item [route]="['/applications/'+id]">
+        Applicant Review
+      </ibm-breadcrumb-item>
+    </ibm-breadcrumb>
+
+    <div ibmRow style="margin-top:0.5rem;">
+      <div ibmCol [columnNumbers]="{'lg':8, 'md':8}">
+        <h2 *ngIf="!loading">Applicant<ibm-tag type="teal" style="position: absolute; margin: 10px 0 0 10px;">
+            <strong>{{ applicant._id | uppercase }}</strong></ibm-tag>
+        </h2>
+        <h4 *ngIf="!loading" style="margin-bottom: 1rem;">{{ application.title  }} <ibm-tag type="purple"
+            style="position: absolute; margin: 4px 0 0 10px;"><strong>
+              {{ application._id | uppercase }}</strong></ibm-tag>
+        </h4>
+      </div>
+      <div style="margin:0; margin-top: 1rem;" ibmCol [columnNumbers]="{'lg':4, 'md':4}">
+        <button ibmButton="primary" style="float: right;" (click)="open=true">Schedule Interview</button>
+      </div>
+    </div>
+
+
+    <!--FIELD INPUTS -->
+    <div class="top-layout-01 tiles" *ngIf="!loading">
+      <div ibmRow>
+        <div ibmCol [columnNumbers]="{'lg':6, 'md':6}" style="min-height: 100%; padding-right: 0;">
+          <div style="background-color: #F4F4F4; padding:1rem; min-height: 100%;">
+            <h2 style="font-size: 20px;">Application Summary</h2>
+
+            <div style="padding:0 0.3rem 0 0.3rem;">
+              <p style="font-weight: 400; font-size: 14px; margin-top:0.75rem; color: #252525; ">Peronsality Insights
+              </p>
+              <div>
+                <ibm-tag type="green" *ngFor="let insights of applicant.personalityInsights" style="margin-left: 0;">
+                  <strong>{{ insights.name.replace('-',' ') }}:
+                    {{insights.raw_score*100 | number:'1.0-0'}}%</strong>
+                </ibm-tag>
+              </div>
+              <p style="font-weight: 400; font-size: 14px; margin-top: 0.4rem; color: #252525; ">Skills</p>
+              <p>&nbsp;{{ applicant.skills }}</p>
+            </div>
+
+            <div style="background-color: white; padding: 1.5rem; margin-top: 1.5REM;">
+              <strong style="font-size: 15px;">Technical Challenge Summary</strong>
+
+              <p style="font-size: 14px; color: #6f6f6f; margin-top: 1rem;">Written Answer</p>
+              <ibm-code-snippet display="single">{{ applicant.techAnsText }}</ibm-code-snippet>
+              <button ibmButton="tertiary" style="margin-top: 0.5rem;">Run Code</button>
+
+              <p style="font-size: 14px; color: #6f6f6f; margin-top: 1rem;">Voice Transcript</p>
+              <p>"{{ applicant.techAnswer }}"</p>
+
+              <div *ngFor="let data of applicant.techAnalysis.document_tone.tones; let i = index"
+                style="display: inline-flex;">
+                <ng-container [ngTemplateOutlet]="tones" [ngTemplateOutletContext]="{data:data}">
+                </ng-container>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div ibmCol [columnNumbers]="{'lg':6, 'md':6}" style="min-height: 100%;">
+          <div style="background-color: #F4F4F4; padding:1.25rem; min-height: 100%;">
+            <ibm-tile style="background-color: white; margin-bottom: 1rem;"
+              *ngFor="let answer of applicant.interviewAnswers; let i = index;">
+              <div style="float: right; margin-top: -10px;">
+                <div *ngFor="let data of applicant.interviewAnalysis[i].document_tone.tones; let i = index"
+                  style="display: inline-flex;">
+                  <div *ngIf="3>i">
+                    <ng-container [ngTemplateOutlet]="tones" [ngTemplateOutletContext]="{data:data}">
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+              <strong style="font-size: 15px;">Question #{{i + 1}}</strong>
+              <p style="font-size: 14px; color: #6f6f6f; margin-top: 1rem;">Question</p>
+              <p>"{{ application.questions[i] }}"</p>
+              <p style="font-size: 14px; color: #6f6f6f; margin-top: 1rem;">Answer</p>
+              <p>"{{ answer }}"</p>
+            </ibm-tile>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <ibm-modal (overlaySelected)="open=false" [open]="open">
+    <div style="background-color: white;">
+      <ibm-modal-header (closeSelect)="open=false">
+        <h4>Schedule follow-up interview</h4>
+        <p> Select some dates that works for your scheduele</p>
+      </ibm-modal-header>
+      <!-- Form-->
+      <section style="padding:2rem">
+        <div ibmRow>
+          <div ibmCol [columnNumbers]="{'lg':6, 'md':6}" style="min-height: 100%;">
+            <div style="background-color: #F4F4F4; padding: 1rem; min-height: 100%;">
+              <h4 style="margin-bottom: 1rem;"><strong>Pick Dates</strong></h4>
+
+              <ibm-date-picker label="Interview Date" theme="light" placeholder="mm/dd/yyyy" language="en"
+                invalidText="Invalid Date Format" dateFormat="m/d/Y" [value]="dateRange"
+                (valueChange)="updateRange($event)">
+              </ibm-date-picker>
+
+              <ibm-label class="top-layout-02">
+                Interview Time
+                <input ibmText placeholder="11:00 AM" (change)='time=$event.target.value' [value]="time"
+                  style="width: 289px;">
+              </ibm-label>
+
+              <button ibmButton="tertiary" (click)="addSlot()"
+                style="margin-top: 1rem; margin-bottom: 1rem;">Add</button>
+
+              <div *ngFor="let time of times" style="margin-top: 0.5rem;">
+                <p style="font-weight: bold;">{{time.date}} - {{time.time}}</p>
+              </div>
+
+            </div>
+          </div>
+          <div ibmCol [columnNumbers]="{'lg':6, 'md':6}" style="min-height: 100%;">
+            <div style="background-color: #F4F4F4; padding: 1rem; min-height: 100%;">
+              <h4 style="margin-bottom: 1rem;"><strong>Message to Applicant</strong></h4>
+              <textarea ibmTextArea placeholder="Enter the message to the applicant here" rows="10"></textarea>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <ibm-modal-footer>
+        <button ibmButton="secondary" (click)="open=false">Cancel</button>
+        <button ibmButton="primary" (click)="open=false" modal-primary-focus>Schedule</button>
+      </ibm-modal-footer>
+    </div>
+  </ibm-modal>
+
+
+</div>
+
+
+<ng-template #tones let-data="data">
+  <ibm-tag type="red" *ngIf="data.tone_id==='anger'" style="margin-left: 0;"><strong>{{ data.tone_name }}:
+      {{data.score*100 | number:'1.0-0'}}%</strong></ibm-tag>
+  <ibm-tag type="cyan" *ngIf="data.tone_id==='analytical'" style="margin-left: 0;"><strong>{{ data.tone_name }}:
+      {{data.score*100 | number:'1.0-0'}}%</strong></ibm-tag>
+  <ibm-tag type="magenta" *ngIf="data.tone_id==='fear'" style="margin-left: 0;"><strong>{{ data.tone_name }}:
+      {{data.score*100 | number:'1.0-0'}}%</strong></ibm-tag>
+  <ibm-tag type="green" *ngIf="data.tone_id==='joy'" style="margin-left: 0;"><strong>{{ data.tone_name }}:
+      {{data.score*100 | number:'1.0-0'}}%</strong></ibm-tag>
+  <ibm-tag type="blue" *ngIf="data.tone_id==='sadness'" style="margin-left: 0;"><strong>{{ data.tone_name }}:
+      {{data.score*100 | number:'1.0-0'}}%</strong></ibm-tag>
+  <ibm-tag type="purple" *ngIf="data.tone_id==='confident'" style="margin-left: 0;"><strong>{{ data.tone_name }}:
+      {{data.score*100 | number:'1.0-0'}}%</strong></ibm-tag>
+  <ibm-tag type="teal" *ngIf="data.tone_id==='tenative'" style="margin-left: 0;"><strong>{{ data.tone_name }}:
+      {{data.score*100 | number:'1.0-0'}}%</strong></ibm-tag>
+</ng-template>

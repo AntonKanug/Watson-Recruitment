@@ -1,0 +1,58 @@
+$feature-flags: (
+	ui-shell: true,
+	grid: true,
+	grid-columns-16: true,
+	css--body: false,
+	css--reset: false,
+);
+
+@import "~carbon-components/scss/globals/scss/styles.scss";
+@import "~carbon-components/scss/globals/scss/layout";
+
+h1 {
+	@include type-style("productive-heading-05");
+}
+
+h2 {
+	@include type-style("productive-heading-04");
+}
+
+h3 {
+	@include type-style("productive-heading-03");
+}
+
+h4 {
+	@include type-style("productive-heading-02");
+}
+
+.main {
+	width: 100%;
+	margin: 48px 0 0 0;
+	padding: 0;
+	min-height: 100%;
+	// for tooltips/popovers...
+	position: relative;
+	background: white;
+}
+
+.main-container {
+	margin-top: 30px;
+	padding-bottom: 13rem;
+	display: block;
+}
+
+.page-wrapper {
+	margin: 0 0 $layout-06 0;
+}
+
+.top-layout-01 {
+	margin-top: $layout-01;
+}
+
+.top-layout-02 {
+	margin-top: $layout-02;
+}
+
+.top-layout-03 {
+	margin-top: $layout-03;
+}

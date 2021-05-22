@@ -1,0 +1,134 @@
+<div>
+  <!--INPUTS -->
+  <div ibmGrid style="width: 70%;">
+
+    <div ibmRow>
+      <div ibmCol [columnNumbers]="{'lg':10, 'md':10}">
+        <h2 style="display: inherit;"> Hiring Dashboard </h2>
+        <h4 style="margin-bottom: 1rem; display: inherit;">Currently Listed Roles</h4>
+      </div>
+      <div style="margin:0; margin-top: 1rem;" ibmCol [columnNumbers]="{'lg':2, 'md':2}">
+        <button ibmButton="primary" (click)="openModal = true" style="float: right;">+ Add Role</button>
+      </div>
+    </div>
+
+    <!--FIELD INPUTS -->
+    <div class="top-layout-01 tiles">
+      <div ibmRow>
+        <div ibmCol [columnNumbers]="{'lg':6, 'md':6}" *ngFor="let application of activeApplications">
+
+          <ibm-clickable-tile [route]="['applications/'+application._id]" style="padding:2rem;">
+            <h5>{{ application.title }}</h5>
+            <p style="font-weight: 400; font-size: 14px;margin-top:0.5rem">Keywords</p>
+            <div>
+              <ibm-tag type="green" *ngFor="let keyword of application.keywords"> <strong>{{ keyword }}</strong>
+              </ibm-tag>
+            </div>
+            <p style="font-weight: 400; font-size: 14px;margin-top:0.3rem">Application ID</p>
+            <div>
+              <ibm-tag type="purple"> <strong>{{ application._id | uppercase }} </strong></ibm-tag>
+            </div>
+          </ibm-clickable-tile>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- MODAL  -->
+  <ibm-modal [open]="openModal" (overlaySelected)="openModal = false" >
+    <ibm-modal-header (closeSelect)="openModal = false">
+      <p class="bx--modal-header__label bx--type-delta">Recruitment Assistant</p>
+      <p class="bx--modal-header__heading bx--type-beta">Add New Role</p>
+    </ibm-modal-header>
+    <div class="bx--modal-content"  style="padding-right: 1rem;">
+
+      <!-- JOB TITLE -->
+      <div ibmRow>
+        <div ibmCol [columnNumbers]="{'lg':12, 'md':12}">
+          <ibm-label helperText="Job Title*">
+            <input theme="light" ibmText placeholder="Software Developer"
+              (change)='application.title=$event.target.value' [value]="application.title">
+          </ibm-label>
+        </div>
+      </div>
+
+      <!-- QUESTIONS -->
+      <div ibmRow style="margin-top: 1rem;">
+        <div ibmCol [columnNumbers]="{'lg':10, 'md':10}">
+          <ibm-label helperText="Interview Questions*">
+            <input theme="light" ibmText (change)='question=($event.target.value)'
+              placeholder="What would you say that are your best skills?">
+          </ibm-label>
+        </div>
+        <div ibmCol [columnNumbers]="{'lg':2, 'md':2}">
+          <button ibmButton="primary" style="
+          margin-top: 25px;" (click)="application.questions.push(question)">
+            + Add
+          </button>
+        </div>
+        <div class="tags">
+          <ibm-tag type="purple" *ngFor="let question of application.questions"><strong>{{ question }}</strong>
+          </ibm-tag>
+        </div>
+      </div>
+
+      <!-- KEYWORDS -->
+      <div ibmRow style="margin-top: 1rem;">
+        <div ibmCol [columnNumbers]="{'lg':10, 'md':10}">
+          <ibm-label helperText="Keywords/Phrases to look for*">
+            <input theme="light" ibmText (change)='keyword=($event.target.value)'
+              placeholder="I love IBM Watson">
+          </ibm-label>
+        </div>
+        <div ibmCol [columnNumbers]="{'lg':2, 'md':2}">
+          <button ibmButton="primary" style="
+          margin-top: 25px;" (click)="application.keywords.push(keyword)">
+            + Add
+          </button>
+        </div>
+        <div class="tags">
+          <ibm-tag type="green" *ngFor="let keyword of application.keywords"><strong>{{ keyword }}</strong>
+          </ibm-tag>
+        </div>
+      </div>
+
+    </div>
+    <ibm-modal-footer>
+      <ng-container>
+        <button ibmButton="secondary" (click)="openModal = false">
+          Cancel
+        </button>
+        <button ibmButton="primary" (click)="onSubmit()" [attr.modal-primary-focus]="true">
+          Submit
+        </button>
+      </ng-container>
+    </ibm-modal-footer>
+  </ibm-modal>
+
+  <ibm-placeholder></ibm-placeholder>
+
+
+  <ibm-toast *ngIf="submit" style="position: absolute;
+  z-index: 10; top:0; right:0" [notificationObj]="{
+				type: 'success',
+				template: customToastContent,
+				title: 'Application Added',
+				myData: {
+					subtitle: 'Provide this data to the applicants to be interviewed'
+				},
+        showClose: false,
+        theme: 'light'
+			}">
+  </ibm-toast>
+
+</div>
+
+
+<ng-template #customToastContent let-data>
+  <h3 ibmToastTitle>{{data.title}}</h3>
+  <p ibmToastSubtitle>{{data.myData.subtitle}}</p>
+  <p ibmToastCaption>{{data.myCaption}}</p>
+  <p ibmToastCaption>ID: {{applicationID}}</p>
+</ng-template>

@@ -1,0 +1,247 @@
+<div>
+  <!--INPUTS -->
+  <div ibmGrid style="width: 60%;">
+    <h2>
+      Application
+    </h2>
+    <h4 style="margin-bottom: 1rem;">
+      IBM Canada - {{ jobTitle }}
+      <ibm-checkbox *ngIf="step === 3" checked="true" (change)="usingVoice = !usingVoice" style="float: right;">
+        Answer using voice
+      </ibm-checkbox>
+    </h4>
+    <form>
+      <!--FIELD INPUTS -->
+      <div *ngIf="step === 1" style="height: 30rem; overflow: hidden;overflow-y:scroll">
+        <div ibmRow>
+          <div ibmCol [columnNumbers]="{'lg': 6, 'md': 6}">
+            <ibm-label class="top-layout-02">
+              First Name <input ibmText placeholder="Johnny" (change)='applicant.firstName=$event.target.value'
+                [value]="applicant.firstName">
+            </ibm-label>
+          </div>
+
+          <div ibmCol [columnNumbers]="{'lg': 6, 'md': 6}">
+            <ibm-label class="top-layout-02">
+              Last Name <input ibmText placeholder="Appleseed" (change)='applicant.lastName=$event.target.value'
+                [value]="applicant.lastName">
+            </ibm-label>
+          </div>
+        </div>
+
+        <div ibmRow>
+          <div ibmCol [columnNumbers]="{'lg': 6, 'md': 6}">
+            <ibm-label class="top-layout-02">
+              Phone Number
+              <input ibmText placeholder="302-492-0322" (change)='applicant.number=$event.target.value'
+                [value]="applicant.number">
+            </ibm-label>
+          </div>
+
+          <div ibmCol [columnNumbers]="{'lg': 6, 'md': 6}">
+            <ibm-label class="top-layout-02">
+              Email
+              <input ibmText placeholder="johnny_appleseed@email.com" (change)='applicant.email=$event.target.value'
+                [value]="applicant.email">
+            </ibm-label>
+          </div>
+        </div>
+
+        <div ibmRow>
+          <div ibmCol [columnNumbers]="{'lg': 6, 'md': 6}">
+            <ibm-label class="top-layout-02">
+              Country of Residence
+              <input ibmText placeholder="Canada" (change)='applicant.country=$event.target.value'
+                [value]="applicant.country">
+            </ibm-label>
+          </div>
+
+          <div ibmCol [columnNumbers]="{'lg': 6, 'md': 6}">
+            <ibm-label class="top-layout-02">
+              Are you authorized to in the work job location?
+            </ibm-label>
+            <div ibmRow style="margin:0; padding-top:0.5rem">
+              <ibm-radio value="radio" checked="true">
+                Yes
+              </ibm-radio>
+              <ibm-radio value="radio">
+                No
+              </ibm-radio>
+              <ibm-radio value="radio">
+                Other
+              </ibm-radio>
+            </div>
+          </div>
+        </div>
+
+        <div ibmRow>
+          <div ibmCol [columnNumbers]="{'lg': 6, 'md': 6}">
+            <ibm-label class="top-layout-02">
+              Please list your skills that relate to the job
+              <input ibmText placeholder="JavaScript, Python, C++, Angular..."
+                (change)='applicant.skills=$event.target.value' [value]="applicant.skills">
+            </ibm-label>
+          </div>
+        </div>
+
+      </div>
+    </form>
+
+    <!-- INTERVIEW INTRO -->
+    <div *ngIf="step === 2" style="height: 30rem; overflow: hidden;overflow-y:scroll">
+      <div ibmRow>
+        <div ibmCol [columnNumbers]="{'lg': 6, 'md': 6}" style="padding:4rem;">
+          <h1 style="color: #666666; font-size: 2.4rem;font-weight: 400;">Interview With Watson</h1>
+          <h4 class="top-layout-02" style="color: #666666;">As part of the application process, you will be asked to
+            take part in a brief audio-only interview with
+            Watson, our AI interviewer. Watson will ask you questions, to which you will record answers.
+            <br> <br>
+            At any point in time you may ask Watson for help, or to clarify the question being asked.
+            <br> <br>
+            Good luck!</h4>
+
+        </div>
+        <div ibmCol [columnNumbers]="{'lg': 6, 'md': 6}">
+          <img src="https://www.nicepng.com/png/full/89-891356_ibm-watson-avatar-ibm-watson-icon.png"
+            style="max-width: 90%;" />
+        </div>
+      </div>
+    </div>
+
+    <!-- INTERVIEW  -->
+    <div *ngIf="step === 3">
+      <div style="height: 30rem; background-color: #EBECED; overflow: hidden;overflow-y:scroll">
+        <div class="top-layout-02" style="color: #666666; padding: 2rem">
+          <div *ngFor="let quest of questions; let i = index;">
+            <div *ngIf="currentQuestion >= i"
+              style="margin-bottom: 1.25rem; max-width: 60%; color: #565656; border-left: 0.4rem solid #A66EFA; padding: 0.5rem; border-radius: 3px">
+              <h4 style="font-size: 15px; line-height: 18px;">{{ quest }}</h4>
+            </div>
+            <div *ngIf="applicant.interviewAnswers[i]"
+              style="margin-left:auto; margin-right:0; margin-bottom: 1.25rem; max-width: 60%; background-color: #3D3D3D; color: #F3F3F3; padding: 1rem;  border-radius: 0.5rem; width: fit-content;">
+              <h4 style="font-size: 15px; line-height: 18px;">{{ applicant.interviewAnswers[i] }}</h4>
+            </div>
+          </div>
+
+          <div *ngIf="recording || loading"
+            style="margin-left:auto; margin-right:0; margin-bottom: 1.25rem; max-width: 60%; background-color: #3D3D3D; color: #F3F3F3; padding: 0.55rem 1rem  0.55rem 1rem;  border-radius: 0.5rem; width: fit-content;">
+            <img src="https://pharmacia.pensoft.net/i/simple_loading.gif" style="width:36px;">
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="usingVoice">
+        <button ibmButton="primary" *ngIf="!recording" (click)="initiateRecording()" [disabled]="disableButton">
+          Start Recording
+          <ibm-icon-microphone size="16" class="bx--btn__icon"></ibm-icon-microphone>
+        </button>
+
+        <button ibmButton="primary" *ngIf="recording" (click)="stopRecording()" [disabled]="disableButton">
+          Stop Recording
+          <ibm-icon-microphone-filled size="16" class="recording bx--btn__icon"></ibm-icon-microphone-filled>
+        </button>
+      </div>
+
+      <div *ngIf="!usingVoice" ibmRow>
+        <div ibmCol [columnNumbers]="{'lg': 10, 'md': 10}" style="padding-right: 0;">
+          <input ibmText [disabled]="recording" placeholder="Enter your answer to the question" style="height: 48px;"
+            (change)='interviewTextbox=$event.target.value' [value]="interviewTextbox" [disabled]="disableButton">
+        </div>
+        <div ibmCol [columnNumbers]="{'lg': 2, 'md': 2}" style="padding-left: 0;">
+          <button ibmButton="primary" (click)="enterMessage()" [disabled]="disableButton">
+            Enter Answer
+            <ibm-icon-send-alt size="16" class="bx--btn__icon"></ibm-icon-send-alt>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+
+    <!-- TECH CHALLENGE -->
+    <div *ngIf="step === 4" style="height: 35rem; overflow: hidden;overflow-y:scroll">
+      <div ibmRow>
+        <div ibmCol [columnNumbers]="{'lg': 12, 'md': 12}" style="padding:1rem;">
+          <h1 style="color: #666666; font-size: 1.6rem;font-weight: 400;">Your Challenge Prompt</h1>
+          <h4 style="color: #666666; margin: 0;">FizzBuzz - Create an algorithm to output Fizz if a number is a multiple
+            of 3 and Buzz if number is a multiple of 5 else output the number for a given [value]. <span
+              style="font-weight:600;">Explain your solution and process as you think, Watson is listening to
+              you!</span>
+            <ibm-icon-microphone-filled size="24" class="recording bx--btn__icon" class="recording">
+            </ibm-icon-microphone-filled>
+          </h4>
+          <ibm-label class="top-layout-02" style="margin-bottom: 0px;">
+            Your Solution
+            <textarea ibmTextArea placeholder="Enter Code Here (Use your preference of programming language)"
+              aria-label="textarea" style="height: 20rem"
+              (change)='applicant.techAnsText=$event.target.value'></textarea>
+          </ibm-label>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUBMIT + SUMMARY -->
+    <div *ngIf="step === 5">
+      <div ibmRow>
+        <div ibmCol [columnNumbers]="{'lg': 12, 'md': 12}" style="padding:2rem;  background-color: #f5f5f5;">
+          <h1>Summary</h1>
+          <div>
+            <h4 class="top-layout-02">About Me</h4>
+            <p style="font-size: 12px; color: #6f6f6f" class="top-layout-01">Name</p>
+            <p>{{ applicant.firstName + " " + applicant.lastName }}</p>
+            <p style="font-size: 12px; color: #6f6f6f">Phone Number</p>
+            <p>{{ applicant.number }}</p>
+            <p style="font-size: 12px; color: #6f6f6f">Email</p>
+            <p>{{ applicant.email }}</p>
+            <p style="font-size: 12px; color: #6f6f6f">Country</p>
+            <p>{{ applicant.country }}</p>
+            <p style="font-size: 12px; color: #6f6f6f">Skills</p>
+            <p>{{ applicant.skills }}</p>
+
+          </div>
+          <div>
+            <h4 class="top-layout-02">Interview</h4>
+            <div *ngFor="let quest of questions; let i = index;">
+              <div
+                style="margin-top: 1.25rem; max-width: 60%; color: #565656; border-left: 0.4rem solid #A66EFA;padding: 0.5rem; border-radius: 3px">
+                <h4 style="font-size: 15px; line-height: 18px;">{{ quest }}</h4>
+              </div>
+              <div *ngIf="applicant.interviewAnswers[i]"
+                style="margin-left:auto; margin-right:0; margin-top: 1.25rem; max-width: 60%; background-color: #3D3D3D; color: #F3F3F3; padding: 1rem;  border-radius: 0.5rem; width: fit-content;">
+                <h4 style="font-size: 15px; line-height: 18px;">{{ applicant.interviewAnswers[i] }}</h4>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h4 class="top-layout-02">Tech Challenge</h4>
+            <p style="font-size: 12px; color: #6f6f6f" class="top-layout-01">Answer</p>
+            <p>{{ applicant.techAnsText }}</p>
+            <p style="font-size: 12px; color: #6f6f6f">Voice Transcript</p>
+            <p>{{ applicant.techAnswer }}</p>
+            <ibm-skeleton-text [lines]="2" [minLineWidth]="290" [maxLineWidth]="350" *ngIf="!applicant.techAnswer">
+            </ibm-skeleton-text>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BACK + NEXT -->
+    <div ibmRow style="float: right;margin-right: 0;" class="top-layout-02" *ngIf="!submit">
+      <button ibmButton="secondary" style="width: 120px;" (click)="back()">Back</button>
+      <button *ngIf="step !== 5" ibmButton="primary" style="margin-left:1rem; width: 120px;" (click)="next()"
+        [disabled]="!disableButton">Next</button>
+      <button *ngIf="step === 5" ibmButton="primary" style="margin-left:1rem; width: 120px;"
+        [disabled]="!applicant.techAnswer" (click)="onSubmit();">Submit</button>
+    </div>
+  </div>
+
+  <ibm-toast *ngIf="submit" style="position: absolute;z-index: 10; top:0; right:0" [notificationObj]="{
+			type: 'success',
+			title: 'Application Submitted',
+			subtitle: 'Your recruiter will get back to you soon!',
+			showClose: true,
+			lowContrast: true
+			}">
+  </ibm-toast>
+
+</div>

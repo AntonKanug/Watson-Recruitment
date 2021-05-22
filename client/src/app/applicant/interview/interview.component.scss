@@ -1,0 +1,22 @@
+@import "~carbon-components/scss/globals/scss/styles.scss";
+@import "~carbon-components/scss/globals/scss/layout";
+
+
+.bx--label {
+  display: flex;
+  font-size: 14px;
+  margin-bottom: 0.75rem;
+  color:#393939;
+}
+
+
+.bx--form__helper-text {
+  margin-bottom: 0.75rem;
+  color: #6f6f6f;
+}
+
+.recording {
+	svg {
+		fill: red;
+	}
+}
