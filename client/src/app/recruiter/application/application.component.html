@@ -35,7 +35,6 @@
     </div>
   </div>
 
-
   <!-- MODAL  -->
   <ibm-modal [open]="openModal" (overlaySelected)="openModal = false" >
     <ibm-modal-header (closeSelect)="openModal = false">
@@ -108,8 +107,6 @@
   </ibm-modal>
 
   <ibm-placeholder></ibm-placeholder>
-
-
   <ibm-toast *ngIf="submit" style="position: absolute;
   z-index: 10; top:0; right:0" [notificationObj]="{
 				type: 'success',
@@ -122,9 +119,7 @@
         theme: 'light'
 			}">
   </ibm-toast>
-
 </div>
-
 
 <ng-template #customToastContent let-data>
   <h3 ibmToastTitle>{{data.title}}</h3>
