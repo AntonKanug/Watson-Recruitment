@@ -1,8 +1,14 @@
 # Watson Recruitment
 
-### Won 3rd place in IBM's North American Intern Hackathon for Embrace
+### Won 3rd place in IBM's North American Intern Hackathon 2020 for Embrace
 
 A recruitment portal intended to eliminate racial discrimination and bias based on cultural backgrounds, and focus on skills to give equal employment opportunities. 
+
+## Demo
+
+![](https://github.com/AntonKanug/Watson-Recruitment/blob/main/client/src/assets/demo.gif)
+
+Full demo with audio - https://www.youtube.com/watch?v=lS5pH5u_pTo
 
 ## Next steps
 * Technological viability: Our solution will grow with Watson. As Watson Speech to Text and Natural Language Processor improves over time, our solution will also improve. 
