@@ -1,6 +1,6 @@
 # Watson Recruitment
 
-### Won 3rd place in IBM's North American Intern Hackathon 2020 for Embrace
+### Won 3rd Place - IBM NA Intern Hackathon 2020 for Embrace
 
 A recruitment portal intended to eliminate racial discrimination and bias based on cultural backgrounds, and focus on skills to give equal employment opportunities. 
 
