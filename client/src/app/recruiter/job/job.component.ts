@@ -15,11 +15,14 @@ export class JobComponent implements OnInit {
   loading = true;
   constructor(private route: ActivatedRoute, private dataService: DataApiService) { }
 
+
+
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
     this.getApplication(this.id);
     this.getApplicants(this.id);
   }
+
 
   getApplication(id) {
     this.dataService.getApplicationByID(id).subscribe((data) => {
@@ -31,6 +34,8 @@ export class JobComponent implements OnInit {
       console.log(error);
     });
   }
+
+  
 
   getApplicants(id) {
     this.dataService.getApplicantsByAppID(id).subscribe((data) => {

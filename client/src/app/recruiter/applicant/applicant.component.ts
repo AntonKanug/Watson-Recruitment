@@ -21,7 +21,11 @@ export class ApplicantComponent implements OnInit {
   date = null;
 
   times = [];
+
+
   constructor(private route: ActivatedRoute, private dataService: DataApiService) { }
+
+
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
@@ -35,9 +39,13 @@ export class ApplicantComponent implements OnInit {
     this.date = event[0].toString().slice(0, 15);
   }
 
+
+
   addSlot() {
     this.times.push({ date: this.date, time: this.time });
   }
+
+
 
   getApplication(id) {
     this.dataService.getApplicationByID(id).subscribe((data) => {
@@ -48,6 +56,8 @@ export class ApplicantComponent implements OnInit {
       console.log(error);
     });
   }
+
+  
 
   getApplicant(appID) {
     this.dataService.getApplicantByID(appID).subscribe((data) => {

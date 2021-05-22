@@ -22,12 +22,18 @@ export class ApplicationComponent implements OnInit {
   submit = false;
   keyword;
   question;
+
+
+
   constructor(protected modalService: ModalService,
     private dataAPI: DataApiService) { }
+
+
 
   ngOnInit(): void {
     this.getApplications();
   }
+
 
 
   getApplications() {
@@ -38,6 +44,8 @@ export class ApplicationComponent implements OnInit {
     });
   }
 
+
+  
 	/**
 	 * Accept the selected user requests
 	 */

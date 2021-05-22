@@ -42,6 +42,10 @@ export class InterviewComponent implements OnInit {
     this.getQuestions(this.applicationID);
   }
 
+
+	/**
+   * Play questions
+   */
   enterMessage() {
     if (this.interviewTextbox) {
       this.applicant.interviewAnswers.push(this.interviewTextbox);
@@ -75,6 +79,8 @@ export class InterviewComponent implements OnInit {
     return this.domSanitizer.bypassSecurityTrustUrl(url);
   }
 
+
+
 	/**
    * Start recording.
    */
@@ -106,6 +112,10 @@ export class InterviewComponent implements OnInit {
   }
 
 
+
+	/**
+   * Stop recording
+   */
   stopRecording() {
     this.recording = false;
     this.record.stop(this.processRecording.bind(this));
@@ -113,6 +123,9 @@ export class InterviewComponent implements OnInit {
   }
 
 
+	/**
+   * Process the blob from recording
+   */
   processRecording(blob) {
     this.url = URL.createObjectURL(blob);
     this.loading = true;
@@ -147,19 +160,27 @@ export class InterviewComponent implements OnInit {
     });
   }
 
+
+
   errorCallback(error) {
     this.error = 'Can not play audio in your browser';
   }
+
+
 
   playNextQuestion() {
     const audio = new Audio(`http://localhost:8080/api/audio/${this.applicationID}/${this.currentQuestion}`);
     audio.play();
   }
 
+
+
   playCantHear() {
     const audio = new Audio('http://localhost:8080/api/audio/1/cantHear');
     audio.play();
   }
+
+
 
   playThanks() {
     const audio = new Audio('http://localhost:8080/api/audio/1/thanks');
@@ -167,9 +188,12 @@ export class InterviewComponent implements OnInit {
   }
 
 
+
   back() {
     this.step -= 1;
   }
+
+
 
   next() {
     this.step += 1;
@@ -185,9 +209,11 @@ export class InterviewComponent implements OnInit {
     }
   }
 
+  
+
   /**
- * Accept the selected user requests
- */
+  * Accept the selected user requests
+  */
   onSubmit() {
     this.applicant.applicationID = this.applicationID;
     this.dataService.addApplicant(this.applicant).subscribe((data) => {
