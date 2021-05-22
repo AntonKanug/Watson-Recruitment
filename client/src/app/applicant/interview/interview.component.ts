@@ -31,10 +31,13 @@ export class InterviewComponent implements OnInit {
   usingVoice = true;
   interviewTextbox: string = null;
 
+
+  
   constructor(
     private domSanitizer: DomSanitizer,
     private dataService: DataApiService,
     private route: ActivatedRoute) { }
+
 
 
   ngOnInit() {
@@ -66,6 +69,10 @@ export class InterviewComponent implements OnInit {
     }
   }
 
+
+	/**
+   * Get questions for the interview by ID
+   */
   getQuestions(id) {
     this.dataService.getApplicationByID(id).subscribe((data) => {
       this.questions = data.questions;
@@ -75,6 +82,8 @@ export class InterviewComponent implements OnInit {
     });
   }
 
+
+  
   sanitize(url: string) {
     return this.domSanitizer.bypassSecurityTrustUrl(url);
   }
@@ -168,6 +177,9 @@ export class InterviewComponent implements OnInit {
 
 
 
+	/**
+   * Play next question in interview
+   */
   playNextQuestion() {
     const audio = new Audio(`http://localhost:8080/api/audio/${this.applicationID}/${this.currentQuestion}`);
     audio.play();
@@ -175,6 +187,9 @@ export class InterviewComponent implements OnInit {
 
 
 
+	/**
+   * Play when answer is not heard (Result is blank)
+   */
   playCantHear() {
     const audio = new Audio('http://localhost:8080/api/audio/1/cantHear');
     audio.play();
@@ -182,6 +197,9 @@ export class InterviewComponent implements OnInit {
 
 
 
+	/**
+   * Play thanks to end verbal interview
+   */
   playThanks() {
     const audio = new Audio('http://localhost:8080/api/audio/1/thanks');
     audio.play();
@@ -212,12 +230,14 @@ export class InterviewComponent implements OnInit {
   
 
   /**
-  * Accept the selected user requests
+  * Submit application
+  * Maybe view the results to applicant ?
   */
   onSubmit() {
     this.applicant.applicationID = this.applicationID;
     this.dataService.addApplicant(this.applicant).subscribe((data) => {
       this.submit = true;
+      console.log(data);
       setTimeout(() => this.submit = false, 8000);
     }, (error) => {
       console.log(error);

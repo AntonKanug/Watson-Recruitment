@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { RecruiterRoutingModule } from './recruiter-routing.module';
 import { ApplicationComponent } from './application/application.component';
+
+
 
 import {
   AccordionModule,
@@ -28,15 +29,19 @@ import {
 } from 'carbon-components-angular';
 
 
+
 import {
   MicrophoneFilledModule,
   MicrophoneModule
 } from '@carbon/icons-angular';
 
-import { ChartsModule } from '@carbon/charts-angular';
 
+
+import { ChartsModule } from '@carbon/charts-angular';
 import { JobComponent } from './job/job.component';
 import { ApplicantComponent } from './applicant/applicant.component';
+
+
 
 @NgModule({
 	declarations: [ApplicationComponent, JobComponent, ApplicantComponent],

@@ -46,7 +46,9 @@ export class ApplicantComponent implements OnInit {
   }
 
 
-
+	/**
+	 * Get application by id
+	 */
   getApplication(id) {
     this.dataService.getApplicationByID(id).subscribe((data) => {
       this.application = data;
@@ -57,8 +59,11 @@ export class ApplicantComponent implements OnInit {
     });
   }
 
-  
 
+
+  /**
+	 * Get applications answers by id
+	 */
   getApplicant(appID) {
     this.dataService.getApplicantByID(appID).subscribe((data) => {
       this.applicant = data;

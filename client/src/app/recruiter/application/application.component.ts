@@ -36,6 +36,9 @@ export class ApplicationComponent implements OnInit {
 
 
 
+	/**
+	 * Retrive all applications for dashboard
+	 */
   getApplications() {
     this.dataAPI.getApplications().subscribe((data) => {
       this.activeApplications = data;
@@ -47,7 +50,7 @@ export class ApplicationComponent implements OnInit {
 
   
 	/**
-	 * Accept the selected user requests
+	 * Add new application and then retrive data again
 	 */
   onSubmit() {
     console.log(this.application);
