@@ -1,5 +1,7 @@
 import { StringTextModule } from '@carbon/icons-angular';
 
+
+
 export class Applicant {
   _id?: String;
   firstName: String = null;
@@ -15,6 +17,8 @@ export class Applicant {
   analysis?: Object;
 
 }
+
+
 
 export class Application {
   _id?: String;

@@ -16,6 +16,8 @@ export class DataApiService {
 	
     constructor(private http: HttpClient) {}
 
+
+
     /**
      * GET TTS
      */
@@ -42,6 +44,8 @@ export class DataApiService {
             .put<any>(`http://localhost:8080/api/watson/stt`, fd)
             .pipe(catchError(async (error) => console.log(error)));
     }
+
+    
 
     addAppliaction(application): Observable<any> {
         return this.http
